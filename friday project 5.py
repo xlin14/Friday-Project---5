@@ -67,3 +67,40 @@ class CustomerApp:
         # Submit Button
         self.submit_button = tk.Button(main_frame, text="Submit", command=self.submit_data, height=2, bg="#4CAF50", fg="white", font=("Helvetica", 10, "bold"))
         self.submit_button.grid(row=6, columnspan=2, pady=20, sticky="ew")
+        def submit_data(self): """Gathers data from the GUI, validates it, inserts it into the database, and clears the form."""
+        if not self.validate_inputs():
+            return 
+
+        try:
+            conn = sqlite3.connect('customer_data.db')
+            cursor = conn.cursor()
+
+            cursor.execute('''
+                INSERT INTO customers (name, birthday, email, phone, address, contact_method)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ''', (
+                self.name_entry.get(),
+                self.birthday_entry.get(),
+                self.email_entry.get(),
+                self.phone_entry.get(),
+                self.address_entry.get(),
+                self.contact_method.get()
+            ))
+
+            conn.commit()
+            conn.close()
+
+            messagebox.showinfo("Success", "Customer information submitted successfully!")
+            self.clear_form()
+
+        except sqlite3.Error as e:
+            messagebox.showerror("Database Error", f"An error occurred: {e}")
+
+    def clear_form(self):
+        """Clears all the entry fields in the GUI."""
+        self.name_entry.delete(0, tk.END)
+        self.birthday_entry.delete(0, tk.END)
+        self.email_entry.delete(0, tk.END)
+        self.phone_entry.delete(0, tk.END)
+        self.address_entry.delete(0, tk.END)
+        self.contact_method.set("Email") 
