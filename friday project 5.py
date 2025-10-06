@@ -104,3 +104,17 @@ class CustomerApp:
         self.phone_entry.delete(0, tk.END)
         self.address_entry.delete(0, tk.END)
         self.contact_method.set("Email") 
+def validate_inputs(self):
+        """Validates the user inputs before database submission."""
+        name = self.name_entry.get()
+        email = self.email_entry.get()
+
+        if not name.strip():
+            messagebox.showwarning("Validation Error", "Name is a required field.")
+            return False
+
+        if email and not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            messagebox.showwarning("Validation Error", "Please enter a valid email address.")
+            return False
+
+        return True
