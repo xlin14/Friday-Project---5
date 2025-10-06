@@ -3,6 +3,7 @@ from tkinter import messagebox
 import sqlite3
 import re
 
+
 def setup_database():
     """Connects to the SQLite database and creates the customers table if it doesn't exist."""
     conn = sqlite3.connect('customer_data.db')
@@ -20,11 +21,18 @@ def setup_database():
     ''')
     conn.commit()
     conn.close()
+
+
+
 class CustomerApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Customer Information Management")
-        self.root.geometry("450x400")
+        self.root.geometry("450x400") # Set a default size
+
+    
+
+        # Main frame with padding
         main_frame = tk.Frame(root, padx=15, pady=15)
         main_frame.pack(fill="both", expand=True)
 
@@ -67,7 +75,10 @@ class CustomerApp:
         # Submit Button
         self.submit_button = tk.Button(main_frame, text="Submit", command=self.submit_data, height=2, bg="#4CAF50", fg="white", font=("Helvetica", 10, "bold"))
         self.submit_button.grid(row=6, columnspan=2, pady=20, sticky="ew")
-        def submit_data(self): """Gathers data from the GUI, validates it, inserts it into the database, and clears the form."""
+
+    
+    def submit_data(self):
+        """Gathers data from the GUI, validates it, inserts it into the database, and clears the form."""
         if not self.validate_inputs():
             return 
 
@@ -104,7 +115,11 @@ class CustomerApp:
         self.phone_entry.delete(0, tk.END)
         self.address_entry.delete(0, tk.END)
         self.contact_method.set("Email") 
-def validate_inputs(self):
+
+
+
+
+    def validate_inputs(self):
         """Validates the user inputs before database submission."""
         name = self.name_entry.get()
         email = self.email_entry.get()
@@ -113,8 +128,24 @@ def validate_inputs(self):
             messagebox.showwarning("Validation Error", "Name is a required field.")
             return False
 
+       
         if email and not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             messagebox.showwarning("Validation Error", "Please enter a valid email address.")
             return False
+        
+        
 
         return True
+
+
+
+
+if __name__ == '__main__':
+
+    setup_database()  
+    root = tk.Tk()
+    app = CustomerApp(root)
+    root.mainloop()
+
+
+
